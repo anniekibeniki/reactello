@@ -18,7 +18,8 @@ export default class TodolistItem extends Component {
     });
   }
   onDeleteItem = () => {
-
+    const { onDeleted } = this.props;
+    onDeleted();
   }
 
   render() {
