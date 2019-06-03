@@ -2,29 +2,14 @@ import React, { Component } from 'react';
 import './todo-list-item.css';
 
 export default class TodolistItem extends Component {
-  state = {
-    done: this.props.done,
-    important: this.props.important,
-  };
 
-  onLabelClick = () => {
-    this.setState((state) => {
-      return { done: !state.done };
-    });
-  }
-  onMarkImportant = () => {
-    this.setState((state) => {
-      return { important: !state.important };
-    });
-  }
   onDeleteItem = () => {
     const { onDeleted } = this.props;
     onDeleted();
   }
 
   render() {
-    const { label } = this.props;
-    const { done, important } = this.state;
+    const { label, onToggleDone, onToggleImportant, done, important } = this.props;
 
     let classes = ['todo-list-item', 'd-inline-flex'];
     if (important) {
@@ -37,12 +22,12 @@ export default class TodolistItem extends Component {
       <span className={ classes.join(' ') }>
             <span
               className="todo-list-item-label"
-              onClick={this.onLabelClick}
+              onClick={onToggleDone}
             >
               { label }
             </span>
             <button type="button"
-              onClick={this.onMarkImportant}
+              onClick={onToggleImportant}
               className="btn btn-outline-success btn-sm">
                 <i className="fa fa-exclamation" />
             </button>
