@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './todo-list-item.css';
 
-const TodolistItem = ({ label, important = false, done = false }) => {
+export default class TodolistItem extends Component {
+  onLabelClick = () => {
+    console.log(`click ${this.props.label}`);
+  }
+  render() {
+    const { label, important = false, done = false } = this.props;
     let dynamicClasses = 'todo-list-item';
     if (important) {
       dynamicClasses += ' important';
@@ -10,20 +15,24 @@ const TodolistItem = ({ label, important = false, done = false }) => {
     if (done) {
       dynamicClasses += ' done';
     }
-
     return (
-        <span className={ dynamicClasses }>
-            <span className="todo-list-item-label">
-                { label }
+      <span className={ dynamicClasses }>
+            <span
+              className="todo-list-item-label"
+              onClick={this.onLabelClick}
+            >
+              { label }
             </span>
-            <button type="button" className="btn btn-outline-success btn-sm float-right">
+            <button type="button"
+                    className="btn btn-outline-success btn-sm float-right">
                 <i className="fa fa-exclamation" />
             </button>
-            <button  type="button" className="btn btn-outline-danger btn-sm float-right">
+            <button  type="button"
+                      className="btn btn-outline-danger btn-sm float-right">
             <i className="fa fa-trash" />
             </button>
-        </span>
+      </span>
     );
-};
+  }
+}
 
-export default TodolistItem;
