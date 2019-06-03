@@ -2,21 +2,38 @@ import React, { Component } from 'react';
 import './todo-list-item.css';
 
 export default class TodolistItem extends Component {
+  state = {
+    done: this.props.done,
+    important: this.props.important,
+  };
+
   onLabelClick = () => {
-    console.log(`click ${this.props.label}`);
+    this.setState((state) => {
+      return { done: !state.done };
+    });
   }
+  onMarkImportant = () => {
+    this.setState((state) => {
+      return { important: !state.important };
+    });
+  }
+  onDeleteItem = () => {
+
+  }
+
   render() {
-    const { label, important = false, done = false } = this.props;
-    let dynamicClasses = 'todo-list-item';
+    const { label } = this.props;
+    const { done, important } = this.state;
+
+    let classes = ['todo-list-item', 'd-inline-flex'];
     if (important) {
-      dynamicClasses += ' important';
+      classes.push('important');
     }
-    
     if (done) {
-      dynamicClasses += ' done';
+      classes.push('done');
     }
     return (
-      <span className={ dynamicClasses }>
+      <span className={ classes.join(' ') }>
             <span
               className="todo-list-item-label"
               onClick={this.onLabelClick}
@@ -24,11 +41,13 @@ export default class TodolistItem extends Component {
               { label }
             </span>
             <button type="button"
-                    className="btn btn-outline-success btn-sm float-right">
+              onClick={this.onMarkImportant}
+              className="btn btn-outline-success btn-sm">
                 <i className="fa fa-exclamation" />
             </button>
             <button  type="button"
-                      className="btn btn-outline-danger btn-sm float-right">
+               onClick={this.onDeleteItem}
+              className="btn btn-outline-danger btn-sm">
             <i className="fa fa-trash" />
             </button>
       </span>
