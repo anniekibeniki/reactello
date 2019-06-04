@@ -4,6 +4,7 @@ import SearchPanel from 'components/search-panel';
 import TodoList from 'components/todo-list';
 import ItemStatusFilter from 'components/item-status-filter';
 import AddItemForm from 'components/add-item-form';
+import Spinner from 'components/spinner';
 import './todo-list-page.css';
 import { ApiService } from 'services';
 
@@ -13,12 +14,13 @@ export default class TodoListPage extends Component {
     todoData: [],
     searchTerm: '',
     filterParam: 'all',
+    loading: true,
   };
 
   constructor() {
     super();
     ApiService.instance().getAllTodos().then((todoData) => {
-      this.setState({ todoData });
+      this.setState({ todoData, loading: false });
     }).catch(() => {});
   }
 
@@ -85,10 +87,13 @@ export default class TodoListPage extends Component {
   }
 
   render() {
-    const { todoData, searchTerm, filterParam } = this.state;
+    const { todoData, searchTerm, filterParam, loading } = this.state;
     const done = todoData.filter(el => el.done).length;
     const toDo = todoData.filter(el => !el.done).length;
     const visibleItems = this.filter(this.search(todoData, searchTerm), filterParam);
+    if (loading) {
+      return (<Spinner />);
+    }
     return (
       <div className="todo-list-page">
         <AppHeader title="My TODO List" toDo={toDo} done={done}/>
