@@ -15,6 +15,8 @@ export default class App extends Component {
       this.createTodoItem('Create Awesome App'),
       this.createTodoItem('Lunch with friends')
     ],
+    searchTerm: '',
+    filterParam: 'all',
   };
 
   deleteTodo = (id) => {
@@ -55,17 +57,44 @@ export default class App extends Component {
       return { todoData: this.toggleProperty(state.todoData, 'done', id) };
     });
   }
+  onSearchTodo = (txt) => {
+    this.setState({ searchTerm: txt });
+  }
+  onChangeActiveFilter = (type) => {
+    this.setState({ filterParam: type });
+  }
+  search(list, term) {
+    const newList = term ? this.state.todoData.reduce((acc, cur) => {
+      if (cur.label.toLowerCase().includes(term.toLowerCase())) {
+        acc.push(cur);
+      }
+      return acc;
+    }, []) : list;
+    return newList;
+  }
+  filter(list, param) {
+    if (param === 'all') {
+      return list;
+    }
+    if (param === 'active') {
+      return list.filter(el => !el.done);
+    }
+    return list.filter(el => el[param]);
+  }
+
   render() {
-    const done = this.state.todoData.filter(el => el.done).length;
-    const toDo = this.state.todoData.filter(el => !el.done).length;
+    const { todoData, searchTerm, filterParam } = this.state;
+    const done = todoData.filter(el => el.done).length;
+    const toDo = todoData.filter(el => !el.done).length;
+    const visibleItems = this.filter(this.search(todoData, searchTerm), filterParam);
     return (
       <div className="todo-app">
         <AppHeader title="My TODO List" toDo={toDo} done={done}/>
         <div className="top-panel d-flex">
-          <SearchPanel />
-          <ItemStatusFilter activeFilter="all"/>
+          <SearchPanel onSearchTodo= {this.onSearchTodo} />
+          <ItemStatusFilter activeFilter={filterParam} onChange={this.onChangeActiveFilter}/>
         </div>
-        <TodoList items={ this.state.todoData }
+        <TodoList items={ visibleItems }
           onToggleImportant={ this.onToggleImportant }
           onToggleDone={ this.onToggleDone }
           onDeleted={ this.deleteTodo }/>
