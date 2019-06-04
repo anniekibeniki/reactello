@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import AppHeader from '../app-header';
-import SearchPanel from '../search-panel';
-import TodoList from '../todo-list';
-import ItemStatusFilter from '../item-status-filter';
-import AddItemForm from '../add-item-form';
-import './index.css';
+import AppHeader from 'components/app-header';
+import SearchPanel from 'components/search-panel';
+import TodoList from 'components/todo-list';
+import ItemStatusFilter from 'components/item-status-filter';
+import AddItemForm from 'components/add-item-form';
+import './todo-list-page.css';
 
-export default class App extends Component {
+export default class TodoListPage extends Component {
   maxId = 1;
   state = {
     todoData: [
@@ -88,7 +88,7 @@ export default class App extends Component {
     const toDo = todoData.filter(el => !el.done).length;
     const visibleItems = this.filter(this.search(todoData, searchTerm), filterParam);
     return (
-      <div className="todo-app">
+      <div className="todo-list-page">
         <AppHeader title="My TODO List" toDo={toDo} done={done}/>
         <div className="top-panel d-flex">
           <SearchPanel onSearchTodo= {this.onSearchTodo} />
