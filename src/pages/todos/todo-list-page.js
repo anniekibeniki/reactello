@@ -5,19 +5,24 @@ import TodoList from 'components/todo-list';
 import ItemStatusFilter from 'components/item-status-filter';
 import AddItemForm from 'components/add-item-form';
 import './todo-list-page.css';
+import { ApiService } from 'services';
 
 export default class TodoListPage extends Component {
   maxId = 1;
   state = {
-    todoData: [
-      this.createTodoItem('Drink tea'),
-      this.createTodoItem('Learn React'),
-      this.createTodoItem('Create Awesome App'),
-      this.createTodoItem('Lunch with friends')
-    ],
+    todoData: [],
     searchTerm: '',
     filterParam: 'all',
   };
+
+  constructor() {
+    super();
+    ApiService.instance().getAllTodos().then((res) => {
+      this.setState({
+        todoData: res.map(({ title, id, completed }) => this.createTodoItem(id, title, completed))
+      });
+    }).catch(() => {});
+  }
 
   deleteTodo = (id) => {
     const foundInd = this.state.todoData.findIndex(el => el.id === id);
@@ -29,9 +34,8 @@ export default class TodoListPage extends Component {
       });
     }
   }
-  createTodoItem(label) {
-    this.maxId += 1;
-    return  { label, important: false , id: this.maxId, done: false };
+  createTodoItem(id, label, done = false, important = false) {
+    return  { label, important, id, done };
   }
   addTodoItem = (label) => {
     this.setState((state) => {
