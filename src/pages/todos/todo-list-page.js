@@ -17,10 +17,8 @@ export default class TodoListPage extends Component {
 
   constructor() {
     super();
-    ApiService.instance().getAllTodos().then((res) => {
-      this.setState({
-        todoData: res.map(({ title, id, completed }) => this.createTodoItem(id, title, completed))
-      });
+    ApiService.instance().getAllTodos().then((todoData) => {
+      this.setState({ todoData });
     }).catch(() => {});
   }
 

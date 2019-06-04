@@ -16,8 +16,17 @@ export default class ApiService {
         }
         return res.json();
     }
-    getAllTodos = () => {
-        return this.getResource('todos');
+    _transformTodo({ id, title, completed = false, important = false }) {
+        return {
+            id,
+            label: title,
+            done: completed,
+            important,
+        };
+    }
+    getAllTodos = async () => {
+        const res = await this.getResource('todos');
+        return res.map(this._transformTodo);
     }
     getTodo = (id) => {
         return this.getResource(`todos/${id}`);
