@@ -3,7 +3,7 @@ import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import TodoList from '../todo-list';
 import ItemStatusFilter from '../item-status-filter';
-import AddItemForm from '../add-item';
+import AddItemForm from '../add-item-form';
 import './index.css';
 
 export default class App extends Component {

@@ -1,0 +1,14 @@
+.add-item-form {
+    display: flex;
+    padding: 1rem 0;
+    margin-top: 10px;
+    border-top: 1px solid gray;
+}
+
+.add-item-form .btn {
+    margin-left: 10px
+}
+
+.add-item-form .form-control {
+    max-width: 80%;
+}
